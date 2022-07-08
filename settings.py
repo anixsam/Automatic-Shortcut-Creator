@@ -1,7 +1,5 @@
 import json
 import tkinter as tk
-from tkinter import filedialog
-
 
 def Add():
     new_drive_letter = drives.get("1.0", "end-1c")

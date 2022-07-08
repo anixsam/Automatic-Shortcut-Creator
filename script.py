@@ -30,7 +30,7 @@ while True:
 
         for x in external_drives:
             if x not in old_external_drives:
-                run("set-shortcut C:/users/anixs/Desktop/" + x + ".lnk " + x + ":/")
+                run("./set-shortcut/set-shortcut C:/users/anixs/Desktop/" + x + ".lnk " + x + ":/")
             extern.write(x)
 
         extern.close()
