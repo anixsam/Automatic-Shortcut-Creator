@@ -1,6 +1,4 @@
 import json
-from operator import le
-from os import remove
 import tkinter as tk
 from tkinter import filedialog
 
@@ -47,7 +45,7 @@ def removeData(value):
     driveList.delete(value)
 
 def browse():
-    folderPath = filedialog.askdirectory()
+    folderPath = tk.filedialog.askdirectory()
 
     config_json = open("./config/settings.json","r")
     settings_list = json.load(config_json)
@@ -125,17 +123,13 @@ folderPathText.place(x=80, y=122)
 
 system_drives = settings_list['system_drives']
 
+
+
 for i in range(0,len(system_drives)):
         driveList.insert(i+1,system_drives[i])
 
-while True:
-    config_json = open("./config/settings.json","r")
-    settings = json.load(config_json)
-    config_json.close() 
-
-    window.update()
-
-
+folderPathText.delete('1.0',"end")
+folderPathText.insert('1.0',settings_list['destination_to_shortcut'])
 
 
 window.mainloop()
