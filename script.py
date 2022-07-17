@@ -1,6 +1,16 @@
 import os
 import subprocess
+import sys
+import json
+
 system_drives = ['C','D']
+
+config_json = open("./config/settings.json", "r")
+settings_list = json.load(config_json)
+config_json.close()
+
+dest = settings_list['destination_to_shortcut']
+
 
 def run(cmd):
     subprocess.run(["powershell", "-Command", cmd], capture_output=True)
@@ -26,22 +36,17 @@ while True:
 
         for x in old_external_drives:
             if x not in external_drives:
-                run("del C:/users/anixs/Desktop/"+x+".lnk") 
+                run("del " + dest +x+".lnk") 
 
         for x in external_drives:
             if x not in old_external_drives:
-                run("./set-shortcut/set-shortcut C:/users/anixs/Desktop/" + x + ".lnk " + x + ":/")
+                run("./set-shortcut/set-shortcut " + dest + x + ".lnk " + x + ":/")
             extern.write(x)
 
         extern.close()
 
-    # extern = open("external.txt","w")
-    # for x in external_drives:
-    #     run("set-shortcut C:/users/anixs/Desktop/" + x + ".lnk " + x + ":/")
-    #     extern.write(x)  
-    # extern.close()
-
     except:
         print("Error")
+        sys.exit()
 
     

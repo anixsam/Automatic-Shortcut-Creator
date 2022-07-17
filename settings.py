@@ -4,7 +4,7 @@ import tkinter as tk
 def Add():
     new_drive_letter = drives.get("1.0", "end-1c")
 
-    config_json = open("./config/settings.json","r")
+    config_json = open("./config/settings.json", "r")
     settings_list = json.load(config_json)
     config_json.close()
 
@@ -15,49 +15,51 @@ def Add():
 
     settings_list['system_drives'] = system_drives
     settings_list['numberOfSysDrive'] = len(system_drives)
-    config_json = open("./config/settings.json","w")
-    json.dump(settings_list,config_json)
+    config_json = open("./config/settings.json", "w")
+    json.dump(settings_list, config_json)
     config_json.close()
 
-    drives.delete('1.0',"end")
+    drives.delete('1.0', "end")
 
-    driveList.delete(0,len(system_drives))
+    driveList.delete(0, len(system_drives))
 
-    for i in range(0,len(system_drives)):
-        driveList.insert(i+1,system_drives[i])
+    for i in range(0, len(system_drives)):
+        driveList.insert(i+1, system_drives[i])
+
 
 def removeData(value):
-    config_json = open("./config/settings.json","r")
+    config_json = open("./config/settings.json", "r")
     settings_list = json.load(config_json)
     config_json.close()
     length = settings_list['numberOfSysDrive']
 
-    system_drives = driveList.get(0,length-2)
+    system_drives = driveList.get(0, length-2)
     settings_list['system_drives'] = system_drives
     settings_list['numberOfSysDrive'] = len(system_drives)
 
-    config_json = open("./config/settings.json","w")
-    json.dump(settings_list,config_json)
+    config_json = open("./config/settings.json", "w")
+    json.dump(settings_list, config_json)
     config_json.close()
 
     driveList.delete(value)
 
+
 def browse():
     folderPath = tk.filedialog.askdirectory()
 
-    config_json = open("./config/settings.json","r")
+    config_json = open("./config/settings.json", "r")
     settings_list = json.load(config_json)
     config_json.close()
 
     settings_list['destination_to_shortcut'] = folderPath
 
-    folderPathText.delete('1.0',"end")
-    folderPathText.insert('1.0',folderPath)
+    folderPathText.delete('1.0', "end")
+    folderPathText.insert('1.0', folderPath)
 
-    config_json = open("./config/settings.json","w")
-    json.dump(settings_list,config_json)
+    config_json = open("./config/settings.json", "w")
+    json.dump(settings_list, config_json)
     config_json.close()
-    
+
 
 window = tk.Tk()
 window.rowconfigure(0, weight=1)
@@ -82,52 +84,69 @@ canvas_settings = tk.Canvas(
 canvas_settings.place(x=0, y=0)
 
 canvas_settings.create_text(
-    120, 
-    20, 
-    text="Select the System Drives", 
+    120,
+    20,
+    text="Select the System Drives",
     fill="#ffffff",
     font=("None", int(15.0)),
-    )
+)
 
-drives = tk.Text(window,height = 1, width = 2)
+drives = tk.Text(window, height=1, width=2)
 drives.place(x=240, y=10)
 
-addButton = tk.Button(settingsPage,text="Add",command= lambda: Add(),height=1,width=5)
+addButton = tk.Button(settingsPage, text="Add",
+                      command=lambda: Add(), height=1, width=5)
 addButton.place(x=270, y=9)
 
-driveList = tk.Listbox(height=4,width=10)
+driveList = tk.Listbox(height=4, width=10)
 driveList.place(x=330, y=9)
 
-removeButton = tk.Button(window, text = "Delete", command = lambda:removeData(tk.ANCHOR),height=1,width=5) 
-removeButton.place(x=270,y=50) 
+removeButton = tk.Button(window, text="Delete", command=lambda: removeData(
+    tk.ANCHOR), height=1, width=5)
+removeButton.place(x=270, y=50)
 
-config_json = open("./config/settings.json","r")
+config_json = open("./config/settings.json", "r")
 settings_list = json.load(config_json)
 config_json.close()
 
 canvas_settings.create_text(
-    165, 
-    100, 
-    text="Select the target folder for shortcut", 
+    165,
+    100,
+    text="Select the target folder for shortcut",
     fill="#ffffff",
     font=("None", int(15.0)),
-    )
+)
 
-browseButton = tk.Button(settingsPage,text="Browse",command= lambda: browse(),height=1,width=6)
+browseButton = tk.Button(settingsPage, text="Browse",
+                         command=lambda: browse(), height=1, width=6)
 browseButton.place(x=15, y=120)
 
-folderPathText = tk.Text(window,height = 1, width = 45)
+folderPathText = tk.Text(window, height=1, width=45)
 folderPathText.place(x=80, y=122)
+
+
+canvas_settings.create_text(
+    185, 
+    175,
+    text="Start the software on windows startup?", 
+    fill="#ffffff",
+    font=("None", int(15.0)),
+)
+
+startupCheck = tk.Checkbutton(
+    bg= "#5595ed",
+    activebackground= "#5595ed"
+)
+startupCheck.place(x=370, y=165)
 
 system_drives = settings_list['system_drives']
 
 
+for i in range(0, len(system_drives)):
+    driveList.insert(i+1, system_drives[i])
 
-for i in range(0,len(system_drives)):
-        driveList.insert(i+1,system_drives[i])
-
-folderPathText.delete('1.0',"end")
-folderPathText.insert('1.0',settings_list['destination_to_shortcut'])
+folderPathText.delete('1.0', "end")
+folderPathText.insert('1.0', settings_list['destination_to_shortcut'])
 
 
 window.mainloop()
